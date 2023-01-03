@@ -11,6 +11,26 @@
   </head>
 
   <body>
+    <% unless flash[:notice].blank? %>
+      <div style="margin: 10px;
+        font-weight: bold;
+        border: 1px solid black;
+        padding: 5px;
+        background-color: beige;">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% unless flash[:error].blank? %>
+      <div style="margin: 10px;
+        font-weight: bold;
+        border: 1px solid black;
+        padding: 5px;
+        background-color: lightcoral;">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

@@ -7,7 +7,7 @@ class WeatherForecast < ApplicationRecord
   def self.retrieve(zipcode)
     cached_forecast = WeatherForecast.recent.find_by(zipcode: zipcode)
     if cached_forecast
-      cached_forecast.forecast_data.merge(cached: true)
+      cached_forecast.forecast_data.merge(cached: cached_forecast.updated_at)
     else
       forecast_data = weather_service.retrieve_weather(zipcode)
       WeatherForecast.create!(zipcode: zipcode, forecast_data: forecast_data)
