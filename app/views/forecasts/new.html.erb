@@ -1,5 +1,10 @@
 <h2>New forecast</h2>
 
-<form>
-  <label>Enter an address</label>
-</form>
+<%= form_for(forecast, url: forecasts_path) do |f| %>
+  <div>
+    Enter an address: <%= f.text_field :address, style: "width: 300px" %>
+  </div>
+  <div style="margin-top: 15px">
+    <%= f.submit %>
+  </div>
+<% end %>

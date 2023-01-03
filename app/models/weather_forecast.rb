@@ -1,10 +1,13 @@
 class WeatherForecast < ApplicationRecord
   CACHE_LIMIT_IN_MINUTES = 30.minutes
 
+  attr_accessor :address
+
   scope :recent, -> { where("created_at > ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
   scope :expired, -> { where("created_at < ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
 
   def self.retrieve(zipcode)
+    byebug
     cached_forecast = WeatherForecast.recent.find_by(zipcode: zipcode)
     if cached_forecast
       cached_forecast.forecast_data.merge(cached: cached_forecast.updated_at)

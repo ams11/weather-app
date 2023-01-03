@@ -8,12 +8,13 @@ class ForecastsController < ApplicationController
   end
 
   def new
-    render "new"
+    forecast = WeatherForecast.new
+    render "new", locals: { forecast: forecast }
   end
 
-  def update
-    forecast = WeatherForecast.retrieve(weather_forecast_params.fetch(:zipcode))
-    redirect_to forecast_path(forecast)
+  def create
+    WeatherForecast.retrieve(weather_forecast_params.fetch(:address))
+    redirect_to forecast_path(weather_forecast_params.fetch(:address))
   end
 
   private
@@ -35,6 +36,6 @@ class ForecastsController < ApplicationController
   end
 
   def weather_forecast_params
-    params.require(:weather_forecast).permit(:zipcode)
+    params.require(:weather_forecast).permit(:address)
   end
 end
