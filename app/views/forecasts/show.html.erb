@@ -1,4 +1,10 @@
-<h2>Forecast for <%= forecast_info[:zipcode] %> (<%= forecast_info[:location] %>)</h2>
+<h2>
+  Forecast for <%= forecast_info[:zipcode] %>&nbsp;
+  (<%= forecast_info[:location] %>)&nbsp;
+  <% if forecast_info[:cached] %>
+    <span style="color: red">(Cached <%= forecast_info[:cached] %> minutes ago)</span>
+  <% end %>
+</h2>
 
 <div>
   <label>Temperature: </label><%= forecast_info[:temperature] %>
