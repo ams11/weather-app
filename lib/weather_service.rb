@@ -5,7 +5,8 @@ class WeatherService
     @app_id = app_id
   end
 
-  def retrieve_weather(zipcode)
-    HTTParty.get("https://api.openweathermap.org/data/2.5/weather?q=#{zipcode}&appid=#{@app_id}&units=imperial")
+  def retrieve_weather(latitude:, longitude:)
+    forecast_url = "https://api.openweathermap.org/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&appid=#{@app_id}"
+    HTTParty.get(forecast_url)
   end
 end

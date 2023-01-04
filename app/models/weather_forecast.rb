@@ -3,23 +3,16 @@ class WeatherForecast < ApplicationRecord
 
   attr_accessor :address
 
-  scope :recent, -> { where("created_at > ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
-  scope :expired, -> { where("created_at < ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
+  scope :recent, -> { where("updated_at > ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
+  scope :expired, -> { where("updated_at < ?", DateTime.now - CACHE_LIMIT_IN_MINUTES) }
 
-  def self.retrieve(zipcode)
-    cached_forecast = WeatherForecast.recent.find_by(zipcode: zipcode)
-    if cached_forecast
-      cached_forecast.forecast_data.merge(cached: cached_forecast.updated_at)
-    else
-      forecast_data = weather_service.retrieve_weather(zipcode)
-      WeatherForecast.create!(zipcode: zipcode, forecast_data: forecast_data)
-      forecast_data
-    end
+  validates :zipcode, uniqueness: true
+
+  def expired?
+    updated_at < DateTime.now - CACHE_LIMIT_IN_MINUTES
   end
 
-  private
-
-  def self.weather_service
-    @weather_service ||= WeatherService.new(WeatherApp::Application.config.open_weather_map_api_key)
+  def cached?
+    updated_at < DateTime.now - 0.5.seconds
   end
 end
