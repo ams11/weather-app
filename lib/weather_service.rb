@@ -6,7 +6,7 @@ class WeatherService
   end
 
   def retrieve_weather(latitude:, longitude:)
-    forecast_url = "https://api.openweathermap.org/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&appid=#{@app_id}"
+    forecast_url = "https://api.openweathermap.org/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&appid=#{@app_id}&units=imperial"
     HTTParty.get(forecast_url)
   end
 end
