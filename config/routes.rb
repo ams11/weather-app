@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   resources :forecasts, only: [:new, :show, :create]
 
   # Defines the root path route ("/")
-  # root "articles#index"
+  root "forecasts#new"
 end
