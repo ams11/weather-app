@@ -14,19 +14,29 @@ class ForecastsController < ApplicationController
   end
 
   def create
-    forecast_retriever = ForecastRetriever.new
-    zipcode = forecast_retriever.retrieve_forecast(address: weather_forecast_params.fetch(:address))
-    redirect_to forecast_path(zipcode)
+    @forecast = retrieve_forecast(address: weather_forecast_params.fetch(:address))
+    if @forecast.nil? || @forecast.errors.any?
+      render "new", locals: { forecast: @forecast } and return
+    else
+      redirect_to forecast_path(@forecast.zipcode)
+    end
   end
 
   private
 
   def validate_forecast
     unless forecast
-      flash[:error] = "Forecast not found"
-
-      redirect_to new_forecast_path
+      forecast_retriever = ForecastRetriever.new
+      @forecast = forecast_retriever.retrieve_forecast(address: forecast_zipcode_param)
+      if @forecast.nil? || @forecast.errors.any?
+        render "new", locals: { forecast: @forecast } and return
+      end
     end
+  end
+
+  def retrieve_forecast(address:)
+    forecast_retriever = ForecastRetriever.new
+    forecast_retriever.retrieve_forecast(address: address)
   end
 
   def mark_as_cached
