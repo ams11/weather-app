@@ -11,8 +11,4 @@ class WeatherForecast < ApplicationRecord
   def expired?
     updated_at < DateTime.now - CACHE_LIMIT_IN_MINUTES
   end
-
-  def cached?
-    updated_at < DateTime.now - 0.5.seconds
-  end
 end
