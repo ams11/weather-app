@@ -1,4 +1,4 @@
-<h2>New forecast</h2>
+<h2>Get current weather for:</h2>
 
 <%= form_for(forecast, url: forecasts_path) do |f| %>
   <div>
@@ -14,6 +14,6 @@
   <% end %>
 
   <div style="margin-top: 15px">
-    <%= f.submit %>
+    <%= f.submit "Get Weather" %>
   </div>
 <% end %>

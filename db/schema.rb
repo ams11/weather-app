@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_04_193945) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_04_231459) do
   create_table "weather_forecasts", force: :cascade do |t|
     t.string "zipcode", null: false
     t.json "forecast_data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "cached", default: false, null: false
+    t.json "upcoming_forecast_data"
   end
 
 end

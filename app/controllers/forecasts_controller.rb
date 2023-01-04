@@ -16,7 +16,7 @@ class ForecastsController < ApplicationController
   def create
     @forecast = retrieve_forecast(address: weather_forecast_params.fetch(:address))
     if @forecast.nil? || @forecast.errors.any?
-      render "new", locals: { forecast: @forecast } and return
+      render "new", locals: { forecast: @forecast }
     else
       redirect_to forecast_path(@forecast.zipcode)
     end
@@ -26,6 +26,7 @@ class ForecastsController < ApplicationController
 
   def validate_forecast
     unless forecast
+      # support retrieving new weather forecasts by navigating directly to the url for a specific zipcode
       forecast_retriever = ForecastRetriever.new
       @forecast = forecast_retriever.retrieve_forecast(address: forecast_zipcode_param)
       if @forecast.nil? || @forecast.errors.any?
