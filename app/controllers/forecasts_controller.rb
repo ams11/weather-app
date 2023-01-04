@@ -4,30 +4,32 @@ class ForecastsController < ApplicationController
   before_action :validate_forecast, only: :show
 
   def show
-    render "show", locals: { forecast_info: forecast_info_from_forecast_data(forecast_data).merge(zipcode: forecast_zipcode_param) }
+    render "show", locals: { forecast_info: forecast_info_from_forecast_data(forecast) }
   end
 
   def new
-    render "new"
+    forecast = WeatherForecast.new
+    render "new", locals: { forecast: forecast }
   end
 
-  def update
-    forecast = WeatherForecast.retrieve(weather_forecast_params.fetch(:zipcode))
-    redirect_to forecast_path(forecast)
+  def create
+    forecast_retriever = ForecastRetriever.new
+    zipcode = forecast_retriever.retrieve_forecast(address: weather_forecast_params.fetch(:address))
+    redirect_to forecast_path(zipcode)
   end
 
   private
 
   def validate_forecast
-    unless forecast_data
+    unless forecast
       flash[:error] = "Forecast not found"
 
       redirect_to new_forecast_path
     end
   end
 
-  def forecast_data
-    @forecast_data ||= WeatherForecast.retrieve(forecast_zipcode_param)
+  def forecast
+    @forecast ||= WeatherForecast.recent.find_by(zipcode: forecast_zipcode_param)
   end
 
   def forecast_zipcode_param
@@ -35,6 +37,6 @@ class ForecastsController < ApplicationController
   end
 
   def weather_forecast_params
-    params.require(:weather_forecast).permit(:zipcode)
+    params.require(:weather_forecast).permit(:address)
   end
 end
