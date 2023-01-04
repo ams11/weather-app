@@ -10,7 +10,8 @@ module ForecastsHelper
       location: forecast_data["name"],
       temperature: forecast_data["main"]["temp"],
       conditions: forecast_data["weather"].first["main"],
-      wind: "#{forecast_data['wind']['speed']} miles per hour at #{forecast_data['wind']['deg']} degrees"
+      wind: "#{forecast_data['wind']['speed']} miles per hour at #{forecast_data['wind']['deg']} degrees",
+      upcoming_weather_data: weather_forecast.upcoming_forecast_data,
     }
   end
 end
