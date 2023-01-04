@@ -2,6 +2,7 @@ class ForecastsController < ApplicationController
   include ForecastsHelper
 
   before_action :validate_forecast, only: :show
+  after_action :mark_as_cached, only: :show
 
   def show
     render "show", locals: { forecast_info: forecast_info_from_forecast_data(forecast) }
@@ -26,6 +27,11 @@ class ForecastsController < ApplicationController
 
       redirect_to new_forecast_path
     end
+  end
+
+  def mark_as_cached
+    # cheat a little bit and don't change the updated_at date here, so we can accurately track when forecasts expire
+    forecast.update!(cached: true, updated_at: forecast.updated_at)
   end
 
   def forecast

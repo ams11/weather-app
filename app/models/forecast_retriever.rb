@@ -9,7 +9,7 @@ class ForecastRetriever
     if forecast.nil? || forecast.expired?
       forecast_data = weather_service.retrieve_weather(latitude: parsed_address.latitude, longitude: parsed_address.longitude)
       if forecast
-        forecast.update!(forecast_data: forecast_data)
+        forecast.update!(forecast_data: forecast_data, cached: false)
       else
         WeatherForecast.create!(zipcode: zipcode, forecast_data: forecast_data)
       end
