@@ -6,7 +6,7 @@ class ForecastRetriever
     # Some addresses around the world don't include postal codes apparently, but our system is currently
     # designed to key off of postal_code, so reject requests for those. I've come across a handful of
     # places that don't use postal codes so far (Ireland, Mongolia, Antarctica), but none in the US,
-    # which is the main target here.
+    # which is the main target here. For an invalid address, parsed_address will just be nil.
     if parsed_address.nil? || parsed_address.components["postal_code"].nil?
       forecast = WeatherForecast.new(address: address)
       forecast.errors.add(:address, "could not be parsed")
